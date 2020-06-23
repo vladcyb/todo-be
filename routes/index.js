@@ -1,13 +1,21 @@
 const router = require('express').Router()
+const authController = require('../controllers/authController')
+const todosController = require('../controllers/todosController')
+const userController = require('../controllers/userController')
+const fs = require('fs')
+const expressJWT = require('express-jwt')
+const secret = fs.readFileSync('secret')
 
-router.post('/register', (req, res) => {
-  const { form } = req.body
-  console.log(req.body)
-  res.end()
-})
+router.post('/register', authController.postRegister)
+router.post('/login', authController.postLogin)
 
-router.post('/login', (req, res) => {
-  res.send('login')
-})
+router.post('/addTodo', expressJWT({ secret }), todosController.postAddTodo)
+router.post('/setDone', expressJWT({ secret }), todosController.postSetDone)
+router.delete('/deleteTodo', expressJWT({ secret }), todosController.deleteTodo)
+router.get('/todos', expressJWT({ secret }), todosController.getTodos)
+
+router.post('/setDarkMode', expressJWT({ secret }), userController.postSetDarkMode)
+router.get('/getDarkMode', expressJWT({ secret }), userController.getDarkMode)
+
 
 module.exports = router
