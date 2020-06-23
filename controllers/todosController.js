@@ -16,7 +16,7 @@ exports.postAddTodo = async (req, res) => {
     id: uuidv4(),
     title,
     description,
-    done: false
+    done: false,
   }
   const update = { $push: { todos: todo } }
   await users.updateOne({ _id: id }, update)
@@ -49,16 +49,22 @@ exports.postSetDone = async (req, res) => {
     return res.status(401).json({ ok: false, error: 'Unauthorized' })
   }
   if (typeof done !== 'boolean') {
-    return res.json({ ok: false, error: '`done` parameter must be a boolean!' })
+    return res.json({
+      ok: false,
+      error: '`done` parameter must be a boolean!',
+    })
   }
-  await users.updateOne({
-    _id: userID,
-    "todos.id": id
-  }, {
-    $set: {
-      "todos.$.done": done
+  await users.updateOne(
+    {
+      _id: userID,
+      'todos.id': id,
+    },
+    {
+      $set: {
+        'todos.$.done': done,
+      },
     }
-  })
+  )
   res.json({ ok: true })
 }
 
@@ -67,17 +73,20 @@ exports.deleteTodo = async (req, res) => {
   const userID = new ObjectID(req.user.data.id)
   const { id } = req.body
   try {
-    await users.updateOne({
-      _id: userID
-    }, {
-      $pull: {
-        todos: {
-          id
-        }
+    await users.updateOne(
+      {
+        _id: userID,
+      },
+      {
+        $pull: {
+          todos: {
+            id,
+          },
+        },
       }
-    })
+    )
     res.json({ ok: true })
-  } catch(error) {
+  } catch (error) {
     console.log(error)
     res.json({ ok: false, error })
   }

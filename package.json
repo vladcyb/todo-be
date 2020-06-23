@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "pre-commit": "prettier --write . && git add ."
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +19,17 @@
     "mongodb": "^3.5.8",
     "mongoose": "^5.9.17",
     "uuid": "^8.1.0"
-  }
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.0.5"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "endOfLine": "auto"
+  },
+  "pre-commit": "pre-commit"
 }

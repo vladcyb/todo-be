@@ -8,12 +8,12 @@ const app = express()
 
 app.use(cors())
 
-const client = new MongoClient(
-    config.MONGO_URL,
-    { useNewUrlParser: true,  useUnifiedTopology: true }
-)
+const client = new MongoClient(config.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 
-client.connect(err => {
+client.connect((err) => {
   const db = client.db('todo')
   const users = db.collection('users')
   if (err) {
@@ -33,5 +33,7 @@ client.connect(err => {
     console.log(err.name)
   })
   const { PORT = config.PORT } = process.env
-  app.listen(PORT, () => { console.log(`listening on port ${PORT}`) })
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
+  })
 })

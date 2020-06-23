@@ -5,7 +5,7 @@ const fs = require('fs')
 const secretKey = fs.readFileSync('secret')
 
 const addUser = (users, data, callback) => {
-  users.insertOne({ ...data, todos: [] }, null, err => {
+  users.insertOne({ ...data, todos: [] }, null, (err) => {
     callback(err)
   })
 }
@@ -24,12 +24,16 @@ exports.postRegister = async (req, res) => {
     return res.status(401).json({ ok: false, error: 'User exists!' })
   }
   bcrypt.hash(password, 12, (err, hash) => {
-    addUser(users, { username, password: hash }, insertionError => {
-      if (insertionError) {
-        return res.json({ ok: false, error: 'Internal server error' })
+    addUser(
+      users,
+      { username, password: hash, darkMode: true },
+      (insertionError) => {
+        if (insertionError) {
+          return res.json({ ok: false, error: 'Internal server error' })
+        }
+        res.json({ ok: true })
       }
-      res.json({ ok: true })
-    })
+    )
   })
 }
 
@@ -53,10 +57,10 @@ exports.postLogin = async (req, res) => {
     }
     if (authOk) {
       const data = {
-        id: found._id
+        id: found._id,
       }
       const options = {
-        expiresIn: config.TOKEN_LIFETIME
+        expiresIn: config.TOKEN_LIFETIME,
       }
       const token = jwt.sign({ data }, secretKey, options)
       return res.json({ ok: true, token })

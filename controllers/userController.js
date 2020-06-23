@@ -8,15 +8,18 @@ exports.postSetDarkMode = async (req, res) => {
     return res.json({ ok: false, error: 'Enter darkMode' })
   }
   try {
-    await users.updateOne({
-      _id: userID
-    }, {
-      $set: {
-        darkMode
+    await users.updateOne(
+      {
+        _id: userID,
+      },
+      {
+        $set: {
+          darkMode,
+        },
       }
-    })
+    )
     res.json({ ok: true })
-  } catch(error) {
+  } catch (error) {
     console.log(error)
     res.json({ ok: false, error })
   }

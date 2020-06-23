@@ -14,8 +14,11 @@ router.post('/setDone', expressJWT({ secret }), todosController.postSetDone)
 router.delete('/deleteTodo', expressJWT({ secret }), todosController.deleteTodo)
 router.get('/todos', expressJWT({ secret }), todosController.getTodos)
 
-router.post('/setDarkMode', expressJWT({ secret }), userController.postSetDarkMode)
+router.post(
+  '/setDarkMode',
+  expressJWT({ secret }),
+  userController.postSetDarkMode
+)
 router.get('/getDarkMode', expressJWT({ secret }), userController.getDarkMode)
-
 
 module.exports = router
