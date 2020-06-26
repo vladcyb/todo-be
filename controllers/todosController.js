@@ -91,3 +91,28 @@ exports.deleteTodo = async (req, res) => {
     res.json({ ok: false, error })
   }
 }
+
+exports.deleteAllDone = async (req, res) => {
+  const { users } = req
+  const userID = new ObjectID(req.user.data.id)
+  try {
+    await users.updateOne(
+      {
+        _id: userID,
+      },
+      {
+        $pull: {
+          todos: {
+            done: true,
+          },
+        },
+      }
+    )
+    const user = await users.findOne({ _id: userID })
+    const { todos } = user
+    res.json({ ok: true, res: todos })
+  } catch (error) {
+    console.log(error)
+    res.json({ ok: false, error })
+  }
+}

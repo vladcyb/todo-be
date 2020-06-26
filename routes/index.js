@@ -11,6 +11,7 @@ router.post('/login', authController.postLogin)
 
 router.post('/addTodo', expressJWT({ secret }), todosController.postAddTodo)
 router.post('/setDone', expressJWT({ secret }), todosController.postSetDone)
+router.delete('/delDone', expressJWT({ secret }), todosController.deleteAllDone)
 router.delete('/deleteTodo', expressJWT({ secret }), todosController.deleteTodo)
 router.get('/todos', expressJWT({ secret }), todosController.getTodos)
 
