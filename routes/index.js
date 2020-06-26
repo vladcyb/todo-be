@@ -19,6 +19,8 @@ router.post(
   expressJWT({ secret }),
   userController.postSetDarkMode
 )
-router.get('/getDarkMode', expressJWT({ secret }), userController.getDarkMode)
+
+router.post('/setBG', expressJWT({ secret }), userController.postSetBG)
+router.get('/theme', expressJWT({ secret }), userController.getTheme)
 
 module.exports = router

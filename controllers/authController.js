@@ -26,7 +26,7 @@ exports.postRegister = async (req, res) => {
   bcrypt.hash(password, 12, (err, hash) => {
     addUser(
       users,
-      { username, password: hash, darkMode: true },
+      { username, password: hash, darkMode: true, bg: '#ECECEC' },
       (insertionError) => {
         if (insertionError) {
           return res.json({ ok: false, error: 'Internal server error' })
