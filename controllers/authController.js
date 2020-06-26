@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config.json')
 const fs = require('fs')
 const secretKey = fs.readFileSync('secret')
+const { INTERNAL_SERVER_ERROR } = require('../errors')
 
 const addUser = (users, data, callback) => {
   users.insertOne({ ...data, todos: [] }, null, (err) => {
@@ -29,7 +30,7 @@ exports.postRegister = async (req, res) => {
       { username, password: hash, darkMode: true, bg: '#9013FE' },
       (insertionError) => {
         if (insertionError) {
-          return res.json({ ok: false, error: 'Internal server error' })
+          return res.json({ ok: false, error: INTERNAL_SERVER_ERROR })
         }
         res.json({ ok: true })
       }

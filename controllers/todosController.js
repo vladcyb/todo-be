@@ -113,6 +113,6 @@ exports.deleteAllDone = async (req, res) => {
     res.json({ ok: true, res: todos })
   } catch (error) {
     console.log(error)
-    res.json({ ok: false, error })
+    res.json({ ok: false, error: '' })
   }
 }

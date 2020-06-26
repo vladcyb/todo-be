@@ -1,3 +1,5 @@
+const { INTERNAL_SERVER_ERROR } = require('../errors')
+
 const ObjectID = require('mongodb').ObjectID
 const colorREG = /^#[0-9a-f]{3,6}$/i
 
@@ -21,7 +23,7 @@ exports.postSetDarkMode = async (req, res) => {
     )
     res.json({ ok: true })
   } catch (error) {
-    res.json({ ok: false, error })
+    res.json({ ok: false, error: INTERNAL_SERVER_ERROR })
   }
 }
 
