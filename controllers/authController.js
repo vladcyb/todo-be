@@ -15,14 +15,23 @@ exports.postRegister = async (req, res) => {
   const { users } = req
   const { username, password } = req.body
   if (!username) {
-    return res.json({ ok: false, error: 'Enter username!' })
+    return res.status(400).json({
+      ok: false,
+      errors: { username: 'Enter username' },
+    })
   }
   if (!password) {
-    return res.json({ ok: false, error: 'Enter password!' })
+    return res.status(400).json({
+      ok: false,
+      errors: { password: 'Enter password' },
+    })
   }
   const found = await users.findOne({ username })
   if (found) {
-    return res.status(401).json({ ok: false, error: 'User exists!' })
+    return res.status(401).json({
+      ok: false,
+      errors: { username: 'User exists' },
+    })
   }
   bcrypt.hash(password, 12, (err, hash) => {
     addUser(
@@ -39,18 +48,26 @@ exports.postRegister = async (req, res) => {
 }
 
 exports.postLogin = async (req, res) => {
-  const INCORRECT_PASSWORD_ERROR = 'Incorrect username or password'
   const { users } = req
   const { username, password } = req.body
   if (!username) {
-    return res.json({ ok: false, error: 'Enter username!' })
+    return res.status(400).json({
+      ok: false,
+      errors: { username: 'Enter username' },
+    })
   }
   if (!password) {
-    return res.json({ ok: false, error: 'Enter password!' })
+    return res.status(400).json({
+      ok: false,
+      errors: { password: 'Enter password' },
+    })
   }
   const found = await users.findOne({ username })
   if (!found) {
-    return res.status(401).json({ ok: false, error: INCORRECT_PASSWORD_ERROR })
+    return res.status(401).json({
+      ok: false,
+      errors: { username: 'Incorrect username or password' },
+    })
   }
   bcrypt.compare(password, found.password, (err, authOk) => {
     if (err) {
@@ -66,6 +83,9 @@ exports.postLogin = async (req, res) => {
       const token = jwt.sign({ data }, secretKey, options)
       return res.json({ ok: true, token })
     }
-    return res.status(401).json({ ok: false, error: INCORRECT_PASSWORD_ERROR })
+    return res.status(401).json({
+      ok: false,
+      errors: { username: 'Incorrect username or password' },
+    })
   })
 }
